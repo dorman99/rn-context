@@ -14,13 +14,12 @@ const reducer = (state, action) => {
     case "remove":
       return state.filter((blog) => blog.id !== action.payload.id);
     case "edit":
-      const idx = state.findIndex((b) => b.id === action.payload.id);
-      if (idx > -1) {
-        const { title, content } = action.payload;
-        state[idx].title = title;
-        state[idx].content = content;
-      }
-      return state;
+      return state.map((b) => {
+        if (b.id === action.payload.id) {
+          return action.payload;
+        }
+        return b;
+      });
     default:
       return state;
   }
@@ -50,6 +49,7 @@ const editBlogPost = (dispatch) => {
       console.log("Something Went Wrong");
       return;
     }
+
     dispatch({ type: "edit", payload: { id, title, content } });
     callback();
   };

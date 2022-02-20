@@ -9,7 +9,19 @@ const EditScreen = ({ navigation }) => {
   const { state, editBlogPost } = useContext(Context);
   const blogPost = state.find((b) => b.id === id);
 
-  return <BlogPostForm />;
+  return (
+    <BlogPostForm
+      initialValue={{ ...blogPost }}
+      onSubmit={(title, content) => {
+        editBlogPost({
+          id,
+          title,
+          content,
+          callback: () => navigation.pop(),
+        });
+      }}
+    />
+  );
 };
 
 const styles = StyleSheet.create();

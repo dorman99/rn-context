@@ -1,20 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, Button } from "react-native";
 import { Context } from "../context/BlogContext";
 
-const BlogPostForm = ({ navigation }) => {
-//   const id = navigation.getParam("id");
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  const { state, editBlogPost, addBlogPost } = useContext(Context);
-//   const blogPost = state.find((b) => b.id === id);
-
-//   useEffect(() => {
-//     setTitle(blogPost.title);
-//     setContent(blogPost.content);
-//   }, []);
+const BlogPostForm = ({ onSubmit, initialValue }) => {
+  const [title, setTitle] = useState(initialValue.title || "");
+  const [content, setContent] = useState(initialValue.content || "");
 
   return (
     <View>
@@ -29,7 +19,7 @@ const BlogPostForm = ({ navigation }) => {
         value={content}
         onChangeText={(text) => setContent(text)}
       />
-      <Button title="Save Blog Post" onPress={() => {}} />
+      <Button title="Save Blog Post" onPress={() => onSubmit(title, content)} />
     </View>
   );
 };
@@ -50,5 +40,12 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
+
+BlogPostForm.defaultProps = {
+  initialValue: {
+    title: "",
+    content: "",
+  },
+};
 
 export default BlogPostForm;
