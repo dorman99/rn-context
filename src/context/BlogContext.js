@@ -30,6 +30,12 @@ const removeBlogPost = (dispatch) => {
   };
 };
 
+const findBlogPost = (dispatch) => {
+  return (id) => {
+    dispatch({ type: "find", payload: { id } });
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   { addBlogPost, removeBlogPost },
