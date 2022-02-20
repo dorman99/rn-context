@@ -7,7 +7,8 @@ const reducer = (state, action) => {
         ...state,
         {
           id: Math.floor(Math.random() * 99999),
-          title: `Blog Post #${state.length + 1}`,
+          title: action.payload.title,
+          content: action.payload.content,
         },
       ];
     case "remove":
@@ -18,9 +19,13 @@ const reducer = (state, action) => {
 };
 
 const addBlogPost = (dispatch) => {
-  return () => {
+  return ({ title, content }) => {
+    if (!title || !content) {
+      console.log("Something Went Wrong");
+      return;
+    }
     // reason why its return anonym so it can be used in other action such as onPress
-    dispatch({ type: "add" });
+    dispatch({ type: "add", payload: { title, content } });
   };
 };
 
