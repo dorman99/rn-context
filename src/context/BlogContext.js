@@ -19,13 +19,14 @@ const reducer = (state, action) => {
 };
 
 const addBlogPost = (dispatch) => {
-  return ({ title, content }) => {
+  return ({ title, content, callback }) => {
     if (!title || !content) {
       console.log("Something Went Wrong");
       return;
     }
     // reason why its return anonym so it can be used in other action such as onPress
     dispatch({ type: "add", payload: { title, content } });
+    callback();
   };
 };
 

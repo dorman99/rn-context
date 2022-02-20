@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Context } from "../context/BlogContext";
-const CreateScreen = () => {
+
+const CreateScreen = ({ navigation }) => {
   const { addBlogPost } = useContext(Context);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -23,7 +24,13 @@ const CreateScreen = () => {
       />
       <Button
         title="Add Blog"
-        onPress={() => addBlogPost({ title, content })}
+        onPress={() => {
+          addBlogPost({
+            title,
+            content,
+            callback: () => navigation.navigate("Index"),
+          });
+        }}
       />
     </View>
   );
