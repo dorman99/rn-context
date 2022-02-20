@@ -8,7 +8,9 @@ const ShowScreen = ({ navigation }) => {
   const blogPost = state.find((b) => b.id === id);
   return (
     <View>
-      <Text>{blogPost.title} - {blogPost.id}</Text>
+      <Text>
+        {blogPost.title} - {blogPost.id}
+      </Text>
     </View>
   );
 };
