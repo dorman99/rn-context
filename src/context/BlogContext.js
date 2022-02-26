@@ -1,62 +1,55 @@
 import createDataContext from "./createDataContext";
+import * as BlogPostAPI from "../api/blogpostAPI";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "add":
-      return [
-        ...state,
-        {
-          id: Math.floor(Math.random() * 99999),
-          title: action.payload.title,
-          content: action.payload.content,
-        },
-      ];
     case "remove":
       return state.filter((blog) => blog.id !== action.payload.id);
-    case "edit":
-      return state.map((b) => {
-        if (b.id === action.payload.id) {
-          return action.payload;
-        }
-        return b;
-      });
+    case "finds":
+      return action.payload;
     default:
       return state;
   }
 };
 
-const addBlogPost = (dispatch) => {
-  return ({ title, content, callback }) => {
+const findBlogPosts = (dispatch) => {
+  return async () => {
+    const blogs = await BlogPostAPI.finds();
+    dispatch({ type: "finds", payload: blogs });
+  };
+};
+
+const addBlogPost = () => {
+  return async ({ title, content, callback }) => {
     if (!title || !content) {
       console.log("Something Went Wrong");
       return;
     }
-    // reason why its return anonym so it can be used in other action such as onPress
-    dispatch({ type: "add", payload: { title, content } });
+    await BlogPostAPI.add({ title, content });
     callback();
   };
 };
 
 const removeBlogPost = (dispatch) => {
-  return (id) => {
+  return async (id) => {
+    await BlogPostAPI.remove(id);
     dispatch({ type: "remove", payload: { id } });
   };
 };
 
-const editBlogPost = (dispatch) => {
-  return ({ id, title, content, callback }) => {
+const editBlogPost = () => {
+  return async ({ id, title, content, callback }) => {
     if (!title || !content || !id) {
       console.log("Something Went Wrong");
       return;
     }
-
-    dispatch({ type: "edit", payload: { id, title, content } });
+    await BlogPostAPI.edit({ id, title, content });
     callback();
   };
 };
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { addBlogPost, removeBlogPost, editBlogPost },
+  { addBlogPost, removeBlogPost, editBlogPost, findBlogPosts },
   [{ title: "test", id: 1, content: "test" }]
 );
